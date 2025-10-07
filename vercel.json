@@ -3,18 +3,18 @@
   "public": true,
   "builds": [
     {
-      "src": "vercel-simple.html",
+      "src": "test.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/",
-      "dest": "/vercel-simple.html"
+      "dest": "/test.html"
     },
     {
-      "src": "^(?!.*vercel-simple.html$).*$",
-      "dest": "/vercel-simple.html"
+      "src": "^(?!.*test.html$).*$",
+      "dest": "/test.html"
     }
   ]
 }
