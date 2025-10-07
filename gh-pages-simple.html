@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI教育应用问题收集平台</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+      
+      .header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      
+      .header p {
+        font-size: 16px;
+        opacity: 0.9;
+      }
+      
+      .content {
+        padding: 30px;
+      }
+      
+      .form-group {
+        margin-bottom: 20px;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+      
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+      
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      
+      .buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+      }
+      
+      .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background: #5a67d8;
+      }
+      
+      .btn-secondary {
+        background: #f7fafc;
+        color: #4a5568;
+        border: 1px solid #e2e8f0;
+      }
+      
+      .btn-secondary:hover {
+        background: #edf2f7;
+      }
+      
+      .satisfaction {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .star {
+        color: #ddd;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      
+      .star.active {
+        color: #ffb300;
+      }
+      
+      .reward-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f6ffed;
+        border-radius: 8px;
+        border: 1px solid #b7eb8f;
+        text-align: center;
+      }
+      
+      .reward-section h3 {
+        color: #52c41a;
+        margin-bottom: 10px;
+      }
+      
+      .reward-qrcode {
+        width: 160px;
+        height: 160px;
+        margin: 15px auto;
+        border: 1px solid #e8f5e9;
+        padding: 5px;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .error-message {
+        color: #e53e3e;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
+      
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        
+        .header {
+          padding: 30px 15px;
+        }
+        
+        .header h1 {
+          font-size: 24px;
+        }
+        
+        .content {
+          padding: 20px;
+        }
+        
+        .buttons {
+          flex-direction: column;
+        }
+        
+        .reward-qrcode {
+          width: 140px;
+          height: 140px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>AI教育应用问题收集平台</h1>
+        <p>请帮助我们改进产品，您的反馈对我们非常重要</p>
+      </div>
+      
+      <div class="content">
+        <form id="feedback-form">
+          <div class="form-group">
+            <label for="appType">您使用的应用类型 <span style="color: #e53e3e;">*</span></label>
+            <select id="appType" name="appType" required>
+              <option value="">请选择</option>
+              <option value="math">数学</option>
+              <option value="language">语言学习</option>
+              <option value="programming">编程</option>
+              <option value="science">科学</option>
+              <option value="other">其他</option>
+            </select>
+            <div class="error-message" id="appType-error">请选择应用类型</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="issueType">问题类型 <span style="color: #e53e3e;">*</span></label>
+            <select id="issueType" name="issueType" required>
+              <option value="">请选择</option>
+              <option value="bug">功能异常</option>
+              <option value="suggestion">功能建议</option>
+              <option value="ui">界面问题</option>
+              <option value="performance">性能问题</option>
+              <option value="other">其他问题</option>
+            </select>
+            <div class="error-message" id="issueType-error">请选择问题类型</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">问题描述 <span style="color: #e53e3e;">*</span></label>
+            <textarea id="description" name="description" placeholder="请详细描述您遇到的问题或建议" required></textarea>
+            <div class="error-message" id="description-error">描述至少需要10个字符</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact">联系方式（可选）</label>
+            <input type="text" id="contact" name="contact" placeholder="邮箱或手机号" />
+          </div>
+          
+          <div class="form-group">
+            <label>您对产品的满意度</label>
+            <div class="satisfaction" id="satisfaction">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <input type="hidden" id="satisfaction-value" name="satisfaction" value="5" />
+          </div>
+          
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary">提交反馈</button>
+            <button type="reset" class="btn btn-secondary">重置</button>
+          </div>
+        </form>
+        
+        <div class="reward-section">
+          <h3>支持我们</h3>
+          <p>如果您觉得我们的产品对您有帮助，欢迎打赏支持我们继续开发</p>
+          <img 
+            src="https://raw.githubusercontent.com/wangxianchuang/AIEDUCATIONWEB/main/src/2d7cfc0d5b735b92c6b01754ad3f0cc7.jpg" 
+            alt="微信打赏二维码" 
+            class="reward-qrcode"
+          />
+          <p>感谢您的支持！</p>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // 表单验证
+      const form = document.getElementById('feedback-form');
+      const descriptionInput = document.getElementById('description');
+      const appTypeInput = document.getElementById('appType');
+      const issueTypeInput = document.getElementById('issueType');
+      
+      // 表单提交处理
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        
+        // 验证必填字段
+        if (!appTypeInput.value) {
+          document.getElementById('appType-error').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('appType-error').style.display = 'none';
+        }
+        
+        if (!issueTypeInput.value) {
+          document.getElementById('issueType-error').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('issueType-error').style.display = 'none';
+        }
+        
+        if (descriptionInput.value.length < 10) {
+          document.getElementById('description-error').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('description-error').style.display = 'none';
+        }
+        
+        if (isValid) {
+          // 收集表单数据
+          const formData = {
+            appType: appTypeInput.value,
+            issueType: issueTypeInput.value,
+            description: descriptionInput.value,
+            contact: document.getElementById('contact').value,
+            satisfaction: document.getElementById('satisfaction-value').value
+          };
+          
+          console.log('提交的表单数据:', formData);
+          
+          // 显示提交成功提示
+          alert('感谢您的反馈！');
+          
+          // 重置表单
+          form.reset();
+          setSatisfaction(5); // 重置评分
+        }
+      });
+      
+      // 实时验证
+      descriptionInput.addEventListener('input', function() {
+        if (this.value.length < 10) {
+          document.getElementById('description-error').style.display = 'block';
+        } else {
+          document.getElementById('description-error').style.display = 'none';
+        }
+      });
+      
+      appTypeInput.addEventListener('change', function() {
+        if (this.value) {
+          document.getElementById('appType-error').style.display = 'none';
+        }
+      });
+      
+      issueTypeInput.addEventListener('change', function() {
+        if (this.value) {
+          document.getElementById('issueType-error').style.display = 'none';
+        }
+      });
+      
+      // 评分星星功能
+      const stars = document.querySelectorAll('.star');
+      const satisfactionValue = document.getElementById('satisfaction-value');
+      
+      function setSatisfaction(rating) {
+        stars.forEach(star => {
+          const starRating = parseInt(star.getAttribute('data-rating'));
+          if (starRating <= rating) {
+            star.classList.add('active');
+          } else {
+            star.classList.remove('active');
+          }
+        });
+        satisfactionValue.value = rating;
+      }
+      
+      stars.forEach(star => {
+        star.addEventListener('click', function() {
+          const rating = parseInt(this.getAttribute('data-rating'));
+          setSatisfaction(rating);
+        });
+        
+        star.addEventListener('mouseover', function() {
+          const rating = parseInt(this.getAttribute('data-rating'));
+          stars.forEach(s => {
+            const sRating = parseInt(s.getAttribute('data-rating'));
+            if (sRating <= rating) {
+              s.style.color = '#ffb300';
+            } else {
+              s.style.color = '#ddd';
+            }
+          });
+        });
+        
+        star.addEventListener('mouseout', function() {
+          const currentRating = parseInt(satisfactionValue.value);
+          stars.forEach(s => {
+            const sRating = parseInt(s.getAttribute('data-rating'));
+            if (sRating <= currentRating) {
+              s.style.color = '#ffb300';
+            } else {
+              s.style.color = '#ddd';
+            }
+          });
+        });
+      });
+      
+      // 初始化评分
+      setSatisfaction(5);
+    </script>
+  </body>
+</html>
