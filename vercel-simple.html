@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI教育应用问题收集平台</title>
+    <!-- 使用CDN加载必要的库 -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd@5.27.4/dist/antd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/antd@5.27.4/dist/reset.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .header h1 {
+            color: #1890ff;
+            font-size: 28px;
+            margin: 0;
+        }
+        .form-section {
+            margin-bottom: 40px;
+        }
+        .submit-button {
+            width: 100%;
+        }
+        .reward-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e8e8;
+            text-align: center;
+        }
+        .qrcode-image {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        // 模拟数据
+        const mockQuestions = [
+            {
+                id: 1,
+                title: '如何将AI工具融入课堂教学？',
+                description: '我是一名高中数学老师，想了解如何有效地将AI辅助教学工具融入到日常教学中，尤其是在解题指导方面。',
+                category: '教学方法',
+                difficulty: 3,
+                status: '待解决',
+                createdAt: '2023-10-01 14:30',
+                author: '张老师'
+            },
+            {
+                id: 2,
+                title: 'AI教育软件的选择标准是什么？',
+                description: '学校计划采购一批AI教育软件，但不知道应该从哪些方面进行评估和选择。希望得到一些专业建议。',
+                category: '工具选择',
+                difficulty: 2,
+                status: '已解决',
+                solution: '评估AI教育软件时，应考虑以下几个方面：1) 教学效果评估；2) 数据隐私保护；3) 教师培训支持；4) 成本效益分析；5) 与现有教学系统的兼容性。',
+                createdAt: '2023-09-28 09:15',
+                author: '李校长'
+            }
+        ];
+
+        // 应用组件
+        function App() {
+            const [form] = antd.Form.useForm();
+            const [questions, setQuestions] = React.useState(mockQuestions);
+            const [searchTerm, setSearchTerm] = React.useState('');
+
+            // 处理表单提交
+            const handleSubmit = (values) => {
+                // 在实际应用中，这里应该将数据发送到服务器
+                const newQuestion = {
+                    id: questions.length + 1,
+                    title: values.title,
+                    description: values.description,
+                    category: values.category,
+                    difficulty: values.difficulty,
+                    status: '待解决',
+                    createdAt: new Date().toLocaleString('zh-CN'),
+                    author: values.author || '匿名用户'
+                };
+                setQuestions([newQuestion, ...questions]);
+                form.resetFields();
+                antd.message.success('问题提交成功！');
+            };
+
+            // 过滤问题列表
+            const filteredQuestions = questions.filter(question => 
+                question.title.includes(searchTerm) || 
+                question.description.includes(searchTerm) ||
+                question.category.includes(searchTerm)
+            );
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>AI教育应用问题收集平台</h1>
+                    </div>
+                     
+                    {/* 搜索框 */}
+                    <antd.Input
+                        placeholder="搜索问题..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        prefix={<antd.Icon type="search" />}
+                        style={{ marginBottom: '20px' }}
+                    />
+
+                    {/* 问题反馈表单 */}
+                    <div className="form-section">
+                        <antd.Card title="提交问题反馈" bordered={false}>
+                            <antd.Form
+                                form={form}
+                                layout="vertical"
+                                onFinish={handleSubmit}
+                            >
+                                <antd.Form.Item
+                                    name="title"
+                                    label="问题标题"
+                                    rules={[{ required: true, message: '请输入问题标题' }]}
+                                >
+                                    <antd.Input placeholder="请输入问题标题" />
+                                </antd.Form.Item>
+
+                                <antd.Form.Item
+                                    name="description"
+                                    label="问题描述"
+                                    rules={[{ required: true, message: '请输入问题描述' }]}
+                                >
+                                    <antd.Input.TextArea rows={4} placeholder="请详细描述您遇到的问题或需求" />
+                                </antd.Form.Item>
+
+                                <antd.Form.Item
+                                    name="category"
+                                    label="问题类别"
+                                    rules={[{ required: true, message: '请选择问题类别' }]}
+                                >
+                                    <antd.Select placeholder="请选择问题类别">
+                                        <antd.Select.Option value="教学方法">教学方法</antd.Select.Option>
+                                        <antd.Select.Option value="工具选择">工具选择</antd.Select.Option>
+                                        <antd.Select.Option value="技术支持">技术支持</antd.Select.Option>
+                                        <antd.Select.Option value="功能建议">功能建议</antd.Select.Option>
+                                        <antd.Select.Option value="伦理问题">伦理问题</antd.Select.Option>
+                                    </antd.Select>
+                                </antd.Form.Item>
+
+                                <antd.Form.Item
+                                    name="difficulty"
+                                    label="问题难度"
+                                    initialValue={3}
+                                >
+                                    <antd.Rate />
+                                </antd.Form.Item>
+
+                                <antd.Form.Item
+                                    name="author"
+                                    label="您的称呼"
+                                >
+                                    <antd.Input placeholder="请输入您的称呼（选填）" />
+                                </antd.Form.Item>
+
+                                <antd.Form.Item>
+                                    <antd.Button type="primary" htmlType="submit" className="submit-button">
+                                        提交反馈
+                                    </antd.Button>
+                                </antd.Form.Item>
+                            </antd.Form>
+                        </antd.Card>
+                    </div>
+
+                    {/* 问题列表 */}
+                    <antd.Card title={`问题列表 (${filteredQuestions.length})`} bordered={false}>
+                        <antd.List
+                            dataSource={filteredQuestions}
+                            renderItem={(item) => (
+                                <antd.List.Item
+                                    actions={[
+                                        <antd.Tag color={item.status === '已解决' ? 'green' : 'blue'}>
+                                            {item.status}
+                                        </antd.Tag>
+                                    ]}
+                                >
+                                    <antd.List.Item.Meta
+                                        title={item.title}
+                                        description={
+                                            <div>
+                                                <p>{item.description}</p>
+                                                <div style={{ marginTop: '8px', color: '#888' }}>
+                                                    <span>类别：{item.category} | </span>
+                                                    <span>难度：{'★'.repeat(item.difficulty)}{'☆'.repeat(5 - item.difficulty)} | </span>
+                                                    <span>提交时间：{item.createdAt} | </span>
+                                                    <span>提交人：{item.author}</span>
+                                                </div>
+                                                {item.solution && (
+                                                    <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
+                                                        <strong>解决方案：</strong>{item.solution}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        }
+                                    />
+                                </antd.List.Item>
+                            )}
+                        />
+                    </antd.Card>
+
+                    {/* 打赏区域 */}
+                    <div className="reward-section">
+                        <antd.Divider>支持我们</antd.Divider>
+                        <h3>如果您觉得这个平台对您有帮助，欢迎打赏支持我们的开发工作！</h3>
+                        <img 
+                            src="https://raw.githubusercontent.com/wangxianchuang/AIEDUCATIONWEB/main/src/2d7cfc0d5b735b92c6b01754ad3f0cc7.jpg" 
+                            alt="微信打赏二维码" 
+                            className="qrcode-image"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "https://via.placeholder.com/200x200?text=扫码打赏";
+                            }}
+                        />
+                        <p style={{ marginTop: '10px', color: '#888' }}>扫描上方二维码支持我们</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // 渲染应用
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,23 +1,20 @@
 {
   "version": 2,
+  "public": true,
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "src": "vercel-simple.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "src": "/",
+      "dest": "/vercel-simple.html"
+    },
+    {
+      "src": "^(?!.*vercel-simple.html$).*$",
+      "dest": "/vercel-simple.html"
     }
-  ],
-  "env": {
-    "NODE_VERSION": "18.x",
-    "NPM_CONFIG_NODE_VERSION": "18"
-  },
-  "buildCommand": "npm run build"
+  ]
 }
